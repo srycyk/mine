@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require 'mine/apps'
+
+    app_name = ARGV.shift or raise 'No app name'
+
+    klass = eval "Mine::Apps::#{app_name.capitalize}::Runner"
+
+    while name = ARGV.shift
+      puts klass.new.(name) #.inspect
+    end
+

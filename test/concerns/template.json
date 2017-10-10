@@ -1,0 +1,8 @@
+{
+  "prefix": "Zero ",
+  "suffix": " (%s)",
+  "count": 0,
+  "first": { "infix": "One", "count": 1 },
+  "second":  { "infix": "Two", "count": 2 },
+  "third":  { "infix": "Three" }
+}
