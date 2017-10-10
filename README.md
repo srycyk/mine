@@ -8,7 +8,7 @@ that dramatically reduces the amount of code you need to write.
 It's designed to compile lists of things like products, services,
 business details, events, reviews, images, etc..
 
-IAmong other things, it is rerunnable, keeps cookies by default,
+Among other things, it is rerunnable, keeps cookies by default,
 follows redirects, retries unresponsive sites, logs activity,
 supports proxy access, and extracts HTTP authentication tokens.
 
