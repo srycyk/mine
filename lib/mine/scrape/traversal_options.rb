@@ -4,13 +4,17 @@ module Mine
     class TraversalOptions < Struct.new(:proxy_providers, :proxy_tries,
                                         :pause, :log_to,
                                         :retries, :retries_pause,
-                                        :remove_on_error, :agent_options)
+                                        :failure_retries,
+                                        :remove_on_error,
+                                        :agent_options)
       SLEEP_SECS = 1
 
       def initialize(proxy_providers: nil, proxy_tries: nil,
                      pause: nil, log_to: nil,
                      retries: nil, retries_pause: nil,
-                     remove_on_error: nil, agent_options: nil)
+                     failure_retries: nil,
+                     remove_on_error: nil,
+                     agent_options: nil)
         set_proxy_providers proxy_providers
         set_proxy_tries proxy_tries
 
@@ -22,6 +26,8 @@ module Mine
 
         set_retries retries
         set_retries_pause retries_pause
+
+        set_failure_retries failure_retries
 
         set_agent_options agent_options
       end
@@ -45,6 +51,12 @@ module Mine
       end
       def set_retries_pause(retries_pause=nil)
         self.retries_pause = retries_pause || 10
+
+        self
+      end
+
+      def set_failure_retries(failure_retries=nil)
+        self.failure_retries = failure_retries || 5
 
         self
       end

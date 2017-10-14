@@ -80,14 +80,19 @@ module Mine
         end
 
         class << self
-          def store_cookie(name, headers, sub_dir=nil)
+          def store_cookie(host_name, headers, sub_dir=nil)
             if value = cookie_values(headers['set-cookie'])
-              cookie_store(name).dump value if value !~ /^\s*$/
+              cookie_store(host_name).dump value if value !~ /^\s*$/
             end
           end
 
-          def cookie_store(name)
-            Storage::DataSaver.new name, sub_dir: COOKIE_DIR, deep_base: true
+          def delete_cookie(host_name)
+            cookie_store(host_name).rm
+          end
+
+          def cookie_store(host_name)
+            Storage::DataSaver.new host_name, sub_dir: COOKIE_DIR,
+                                              deep_base: true
           end
 
           def cookie_values(cookie_text)

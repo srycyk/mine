@@ -13,7 +13,8 @@ end
 module TaskHelpers
   def task_options(removal=false)
     Mine::Scrape::TraversalOptions.new pause: 0, remove_on_error: removal,
-                                       retries: 1, retries_pause: 0
+                                       retries: 1, retries_pause: 0,
+                                       failure_retries: 0
   end
 
   def sites_to_content(path_to_excerpt=mappings)

@@ -7,6 +7,8 @@ module Mine
           found = searcher.(data, item, index)
 
           collector << [ found, item, index ] if found&.any?
+
+          collector
         end
       end
     end
