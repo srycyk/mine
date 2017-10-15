@@ -14,7 +14,7 @@ I has, just about, every feature you may need when data mining.
 Among other things, it is rerunnable, supports rotating proxy access,
 is error tolerant (it retries unresponsive sites),
 follows redirects &amp; keeps cookies by default,
-logs activity extensively, does not need constant monotoring,
+logs activity extensively, does not need constant monitoring,
 and has helpers to extract &amp; reformat data.
 
 It can be be used as a library, (from the console, command-line, etc.),
@@ -78,7 +78,7 @@ from a number of (free) proxy providers - currently there are three.
 
 Also, you can specify the number of requests
 you want the proxy to be used for.
-Once the limit's exceeded, that particular IP address is dicarded,
+Once the limit's exceeded, that particular IP address is discarded,
 and a new one is fetched from another provider.
 
 > Proxy servers trick the host into thinking
