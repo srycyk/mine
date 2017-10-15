@@ -54,6 +54,7 @@ module Mine
       private
 
       def process_request(url, tries=1, error_count=0)
+        proxy = nil
         begin
           proxy = get_proxy error_count
 
@@ -83,7 +84,7 @@ module Mine
                 raise TooManyAttemptsError, visit_list.to_s
               end
 
-              issue_proxy&.die
+              proxy&.die
 
               wait_for = failure_count * 60 * 1
               log "  Too many attempts - waiting for #{wait_for / 60} mins\n"

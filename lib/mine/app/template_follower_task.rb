@@ -4,12 +4,11 @@ require 'mine/concerns/sequence_template'
 module Mine
   module App
     class TemplateFollowerTask < FollowerTask
-      attr_accessor :template_file_name
+      attr_accessor :template_paths, :template_file
 
       def initialize(*args)
-        if args.size > 1 and String === args.last
-          self.template_file_name = args.pop
-        end
+        self.template_file = args.pop if String === args.last
+        self.template_paths = args.pop if Array === args.last
 
         super *args
       end
@@ -17,8 +16,8 @@ module Mine
       private
 
       def initial_values(name=nil)
-        #Concerns::SequenceTemplate.new(name, template_file_name).()
-        sequence_template(name, template_file_name).()
+puts sequence_template(name, template_paths, template_file) #.()
+        sequence_template(name, template_paths, template_file).()
       end
     end
   end

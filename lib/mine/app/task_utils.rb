@@ -1,11 +1,83 @@
 
 require 'mine/concerns/reformatter'
+require 'mine/concerns/sequence_list'
 
 module Mine
   module App
     module TaskUtils
-      CONFIG = 'config'
+      def task(klass, options=nil, *args)
+        options = overt unless options
 
+        klass.new(settings, options, *args).tap {|task| yield task if block_given? }
+      end
+
+      def follower_task(options=nil, &block)
+        task FollowerTask, options, &block
+      end
+
+      def pager_task(options=nil, &block)
+        task PagerTask, options, &block
+      end
+
+      def reducer_task(options=nil, &block)
+        task ReducerTask, options, &block
+      end
+
+      def template_follower_task(options=nil, template_paths=nil,
+                                 template_file=nil,  &block)
+        task TemplateFollowerTask, options, template_paths,
+                                   template_file, &block
+      end
+
+      def follow_xref_task(searcher, name, name_suffix, options=nil)
+        task FollowerXrefTask options do |follow_xref|
+          follow_xref.(searcher, name, name_suffix)
+        end
+      end
+
+      def search_xref_task(searcher, name, name_suffix)
+        SearchAllXrefTask.new.(searcher, name, name_suffix)
+      end
+
+      def extract_task(name, &extractor)
+        ExtractAllTask.new(settings).(name, &extractor)
+      end
+
+      def search_task(name, &searcher)
+        SearchAllTask.new(settings).(name, &searcher)
+      end
+
+      # Options
+      def covert(override={})
+        providers = settings.proxy_providers
+
+        traversal_options **proxy_options(providers).merge(override)
+      end
+
+      def overt(override={})
+        traversal_options **default_options.merge(override)
+      end
+
+      def casual(override={})
+        traversal_options **removal_options.merge(override)
+      end
+
+      def default_options
+        { pause: 1, retries: 3 }
+      end
+      def proxy_options(providers)
+        { proxy_providers: providers, proxy_tries: 12, pause: 9 }
+      end
+      def removal_options
+        { remove_on_error: true, pause: 1, retries: 3, retries_pause: 10 }
+      end
+
+      def traversal_options(**opts)
+        #opts = Scrape::TraversalOptions.clean_options opts
+
+        Scrape::TraversalOptions.new **opts
+      end
+=begin
       # Tasks
       def task(klass, options={})
         klass.new(settings, options).tap {|task| yield task if block_given? }
@@ -56,27 +128,39 @@ module Mine
       end
 
       # Templates
-      def template(name, dirs=template_dirs, file_name=nil)
+      TEMPLATE_CONFIG = 'config'
+
+      def template(name, dirs=nil, file_name=nil)
+        dirs ||= default_template_paths
+
         Concerns::Template.new(name, dirs, file_name)
       end
 
-      def sequence_template(name, dirs=template_dirs, file_name=nil)
+      def sequence_template(name, dirs=nil, file_name=nil)
+        dirs ||= default_template_paths
+
         Concerns::SequenceTemplate.new(name, dirs, file_name)
       end
 
-      def template_dirs
-        [ join(pwd, CONFIG),
-          join(settings.shallow_root_dir, CONFIG),
-          join(settings.root_dir, CONFIG),
-          join(CONFIG, settings.app_name) ]
+      def list_template(items, name=nil, dirs=nil, file_name=nil)
+        template_string = template(name, items, dirs, file_name).()
+
+        Mine::Concerns::SequenceList.new(template_string, items)
+      end
+
+      def default_template_paths
+        [ join(pwd, TEMPLATE_CONFIG),
+          join(settings.shallow_root_dir, TEMPLATE_CONFIG),
+          join(settings.root_dir, TEMPLATE_CONFIG),
+          join(TEMPLATE_CONFIG, settings.app_name) ]
       end
 
       def join(*dirs)
         File.join *dirs.flatten
       end
 
-      def site_from_template
-        template(nil).(%w(prefix))
+      def site_from_template(elements=%w(prefix))
+        template(nil).(elements)
       end
 
       # Url's
@@ -115,6 +199,7 @@ module Mine
       def app_token(name)
         "#{settings.app_name}-#{name}"
       end
+=end
     end
   end
 end

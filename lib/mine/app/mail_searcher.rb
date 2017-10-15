@@ -15,14 +15,14 @@ module Mine
 
         contact_search = Scrape::ContactLinkSearch.new
 
+=begin
         task App::FollowXrefTask do |follow_xref|
           follow_xref.(contact_search, site_list_name, name_suffix, options)
         end
-=begin
+=end
         task App::FollowXrefTask, options do |follow_xref|
           follow_xref.(contact_search, site_list_name, name_suffix)
         end
-=end
       end
 
       def email_xref_search(site_list_name, name_suffix=nil)

@@ -1,6 +1,10 @@
 
 module Mine
   module Scrape
+    OPTION_NAMES = %i(proxy_providers proxy_tries pause log_to
+                      retries retries_pause failure_retries
+                      remove_on_error agent_options)
+
     class TraversalOptions < Struct.new(:proxy_providers, :proxy_tries,
                                         :pause, :log_to,
                                         :retries, :retries_pause,
@@ -87,6 +91,10 @@ module Mine
 
       def to_s
         members.inject('') {|acca, name| acca << show(name) }
+      end
+
+      def self.clean_options(options)
+        options.select {|key, _| OPTION_NAMES.include? key }
       end
 
       private

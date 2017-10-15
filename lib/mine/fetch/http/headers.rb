@@ -26,7 +26,7 @@ module Mine
         def read_default
           sub_dirs = Storage::DataLocator.shallow_root
 
-          config = App::TaskUtils::CONFIG
+          config = App::TaskHelpers::TEMPLATE_CONFIG
 
           dirs = [ File.join(sub_dirs, config),
                    File.join(config, sub_dirs.last),

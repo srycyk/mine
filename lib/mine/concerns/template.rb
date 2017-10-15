@@ -13,7 +13,6 @@ module Mine
 
         self.file_name ||= 'template'
 
-        #self.params = dict(file_name, sub_dir).()
         self.params = config_file.()
 
         self.named_params = params[name] || {}
@@ -35,10 +34,6 @@ module Mine
       def config_file
         ConfigFile.new file_name, sub_dirs
       end
-
-      #def dict(file_name, sub_dir)
-      #  Storage::Dict.new name: file_name, sub_dir: sub_dir || 'config'
-      #end
 
       def elements
         ELEMENTS
