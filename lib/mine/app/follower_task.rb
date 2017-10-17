@@ -13,12 +13,6 @@ module Mine
 
         issuer = follower.(visit_list, &block)
       end
-
-      private
-
-      def initial_values(name=nil)
-        raise "Empty list: #{name}"
-      end
     end
   end
 end

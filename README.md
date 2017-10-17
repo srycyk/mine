@@ -114,10 +114,6 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install mine
-
 Or use it from within the gem itself.
 
 ## Creating a scraping application
@@ -129,9 +125,8 @@ Mine::Apps::{MyApp} and write a class called *Runner*, that inherits
 from the supplied class: *Mine::App::RunnerBase*.
 
 Another way is to run a Ruby script from the command line directly.
-As with the preceding, the main class needs to
-inherit from *Mine::App::RunnerBase*, but in this context the
-application class needs to have a few lines added for configuration.
+Unlike the preceding, the main class needs to
+inherit from *Mine::App::RunnerBaseCL*.
 
 The former is better for big jobs, the latter for quick results.
 

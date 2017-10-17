@@ -15,31 +15,38 @@ module Mine
       end
 
       # Templates
-      TEMPLATE_CONFIG = 'config'
+      TEMPLATE_CONFIG_DIR = 'config'
 
-      def template(name, dirs=nil, file_name=nil)
-        dirs ||= default_template_paths
+      def template(name, paths=nil, file_name=nil)
+        paths ||= template_paths
+        file_name ||= template_file
 
         Concerns::Template.new(name, dirs, file_name)
       end
 
-      def sequence_template(name, dirs=nil, file_name=nil)
-        dirs ||= default_template_paths
+      def sequence_template(name, paths=nil, file_name=nil)
+        paths ||= template_paths
+        file_name ||= template_file
 
-        Concerns::SequenceTemplate.new(name, dirs, file_name)
+        Concerns::SequenceTemplate.new(name, paths, file_name)
       end
 
-      def list_template(items, name=nil, dirs=nil, file_name=nil)
-        template_string = template(name, items, dirs, file_name).()
+      def list_template(items, name=nil, paths=nil, file_name=nil)
+        template_string = template(name, items, paths, file_name).()
 
         Mine::Concerns::SequenceList.new(template_string, items)
       end
 
-      def default_template_paths
-        [ join(pwd, TEMPLATE_CONFIG),
-          join(settings.shallow_root_dir, TEMPLATE_CONFIG),
-          join(settings.root_dir, TEMPLATE_CONFIG),
-          join(TEMPLATE_CONFIG, settings.app_name) ]
+      def template_paths
+        [ join(pwd, TEMPLATE_CONFIG_DIR),
+          join(settings.shallow_root_dir, TEMPLATE_CONFIG_DIR),
+          join(settings.root_dir, TEMPLATE_CONFIG_DIR),
+          join(TEMPLATE_CONFIG_DIR, settings.app_name) ]
+      end
+
+      def template_file
+puts "TaskHelper: #{self.inspect}"
+        # default: 'template'
       end
 
       def join(*dirs)

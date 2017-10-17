@@ -4,10 +4,14 @@ require 'mine/app/task_base'
 module Mine
   module App
     class FollowXrefTask < TaskBase
-      def call(searcher, name, name_suffix='aux', follower_options=nil)
+      def call(searcher, name, name_suffix=nil, follower_options=nil)
+        name_suffix ||= 'aux'
+
         follow_links link_list(searcher, name, name_suffix),
                      name, name_suffix, follower_options
       end
+
+      private
 
       def link_list(searcher, name, name_suffix)
         index_links search_links(searcher, name), name, name_suffix
@@ -39,12 +43,6 @@ module Mine
         follower_task(follower_options || options) do |follower|
           follower.(auxiliary_file, link_list)
         end
-      end
-
-      private
-
-      def initial_values(name=nil)
-        raise "Empty list: #{name}"
       end
     end
   end

@@ -1,6 +1,7 @@
 
 require 'mine/app/settings'
 require 'mine/app/runner_base'
+require 'mine/app/runner_base_cl'
 
 require 'mine/app/extract_all_task'
 require 'mine/app/search_all_task'

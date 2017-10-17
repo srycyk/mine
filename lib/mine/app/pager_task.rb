@@ -5,9 +5,9 @@ require 'mine/app/task_base'
 module Mine
   module App
     class PagerTask < TaskBase
-      def call(name, start=nil, &block)
+      def call(name, start=nil, start_name=name, &block)
         visit_list = Storage::CycleListSave.get(name) do
-          [ start || start_url(name) ]
+          [ start || start_url(start_name) ]
         end
 
         pager = Scrape::Pager.new(options)

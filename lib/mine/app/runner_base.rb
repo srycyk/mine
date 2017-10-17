@@ -13,7 +13,8 @@ module Mine
       def initialize(*)
         super
 
-        self.settings = Settings.new(app_name || get_app_name)
+        self.app_name ||= get_app_name
+        self.settings = Settings.new(app_name)
 
         #self.xx = xx
       end
@@ -33,7 +34,20 @@ module Mine
       private
 
       def get_app_name
-        self.class.name.split('::')[-2].downcase
+        #self.class.name.split('::')[-2].downcase
+        elements = self.class.name.split('::').reverse
+
+        if first = elements.shift
+          name = first.sub /Runner$/, ''
+
+          if name == ''
+            elements.shift
+          else
+            name
+          end
+        else
+          'default'
+        end.downcase
       end
     end
   end

@@ -56,9 +56,15 @@ module Mine
       def process_request(url, tries=1, error_count=0)
         proxy = nil
         begin
-          proxy = get_proxy error_count
+          if proxy?
+            exceeded = (error_count >= PROXY_GIVE_UP_TRIES)
 
-          return process_request!(url, proxy)
+            proxy = get_proxy exceeded
+
+            error_count = 0 if exceeded
+          end
+
+          return process_request!(url, proxy) #.tap { error_count = 0 }
         rescue TerminationError => e
           log e
 
@@ -86,9 +92,7 @@ module Mine
 
               proxy&.die
 
-              wait_for = failure_count * 60 * 1
-              log "  Too many attempts - waiting for #{wait_for / 60} mins\n"
-              sleep wait_for
+              pause
 
               remove_cookie url
 
@@ -100,6 +104,14 @@ module Mine
             end
           end
         end
+      end
+
+      def pause
+        secs = failure_count * 60 * 1
+
+        log "  Too many attempts - waiting for #{(secs / 60.0).round 2} mins\n"
+
+        sleep secs
       end
 
       def process_request!(url, proxy=nil)
@@ -122,15 +134,18 @@ module Mine
         visit_list.resume.finished?
       end
 
-      def get_proxy(error_count)
-        if proxy_issuer
-          issue_proxy.die if error_count > PROXY_GIVE_UP_TRIES
+      def get_proxy(refresh=false)
+        #if proxy_issuer
+          issue_proxy.die if refresh
 
           issue_proxy
-        end
+        #end
       end
       def issue_proxy
         proxy_issuer.() or raise NoMoreProxiesError, "#{visit_list}"
+      end
+      def proxy?
+        proxy_issuer
       end
 
       def on_success(response)
