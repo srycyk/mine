@@ -8,7 +8,7 @@ module Mine
 
       KEY_DELIM = '^'
 
-      attr_accessor :sequence
+      attr_accessor :sequence, :current_key
 
       def initialize(*)
         super
@@ -21,14 +21,32 @@ module Mine
       end
 
       def add(key, *values)
-        super composite(key), *values
+        self.current_key = composite(key)
+
+        super current_key, *values
       end
 
-      def assign(key_value_pairs)
-        key_value_pairs.each_slice(2) do |(key, values)|
-          add key, *[values].flatten
-        end
+      def <<(value)
+        raise "No key present " unless current_key
+
+        dict[current_key] << value
+
+        self
       end
+
+      def +(values)
+        raise "No key present " unless current_key
+
+        dict[current_key] += [ values ].flatten
+
+        self
+      end
+
+      #def assign(key_value_pairs)
+      #  key_value_pairs.each_slice(2) do |(key, values)|
+      #    add key, *[values].flatten
+      #  end
+      #end
 
       def each
         (dict.dict.keys.sort).each {|key| yield dict[key] }

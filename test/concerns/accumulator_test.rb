@@ -30,5 +30,23 @@ describe Mine::App::Accumulator do
 
     assert_equal "f^00001", acca.dict.dict.keys.first
   end
+
+  it 'appends a value with <<' do
+    acca.add [nil], %w(a b c)
+    acca.add [nil], %w(x)
+
+    acca << 'y' << 'z'
+
+    assert_match MATCH, to_match(acca.csv)
+  end
+
+  it 'appends values with +' do
+    acca.add [nil], %w(a b c)
+    acca.add [nil]
+
+    acca + %w(x y) + 'z'
+
+    assert_match MATCH, to_match(acca.csv)
+  end
 end
 
