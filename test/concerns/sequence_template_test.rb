@@ -5,7 +5,7 @@ require 'mine/concerns/sequence_template'
 describe Mine::Concerns::SequenceTemplate do
   let(:from) { 'test/concerns/' }
 
-  let(:template) { Mine::Concerns::SequenceTemplate.new 'second', [ from ] }
+  let(:template) { Mine::Concerns::SequenceTemplate.new 'second', nil, [ from ] }
 
   it 'works' do
     expected = [ 'Zero Two (1)', 'Zero Two (2)' ]

@@ -3,9 +3,10 @@ require "test_helper"
 require 'mine/concerns/template'
 
 describe Mine::Concerns::Template do
-  let(:template) { Mine::Concerns::Template.new 'first', [ 'xxxx', to ] }
-
   let(:file) { 'template.json' }
+
+  let(:template) { Mine::Concerns::Template.new 'first', nil, [ 'xxxx', to ] }
+
   let(:from) { 'test/concerns/' }
   let(:to) { 'tmp/ds-mine/test/' }
 

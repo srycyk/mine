@@ -23,8 +23,8 @@ module Mine
         task ReducerTask, options, &block
       end
 
-      def template_follower_task(options=nil, paths=nil, file_name=nil, &block)
-        task TemplateFollowerTask, options, paths, file_name, &block
+      def template_follower_task(options=nil, file_name=nil, paths=nil, &block)
+        task TemplateFollowerTask, options, file_name, paths, &block
       end
 
       def follow_xref_task(searcher, name, name_suffix, options=nil)

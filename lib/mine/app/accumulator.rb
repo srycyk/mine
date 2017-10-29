@@ -27,19 +27,19 @@ module Mine
       end
 
       def <<(value)
-        raise "No key present " unless current_key
-
-        dict[current_key] << value
+        dict[get_current_key] << value
 
         self
       end
 
       def +(values)
-        raise "No key present " unless current_key
-
-        dict[current_key] += [ values ].flatten
+        dict[get_current_key] += [ values ].flatten
 
         self
+      end
+
+      def current
+        dict[current_key]
       end
 
       #def assign(key_value_pairs)
@@ -58,11 +58,15 @@ module Mine
 
       def write(path)
         File.open path, 'w' do |stream|
-          stream.write csv * ''
+          stream.write csv.join
         end
       end
 
       private
+
+      def get_current_key
+        current_key or raise "No key present. Must first call #add"
+      end
 
       def composite(key)
         to_key(key) * KEY_DELIM

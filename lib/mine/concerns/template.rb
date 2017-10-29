@@ -3,7 +3,7 @@ require 'mine/concerns/config_file'
 
 module Mine
   module Concerns
-    class Template < Struct.new(:name, :sub_dirs, :file_name)
+    class Template < Struct.new(:name, :file_name, :sub_dirs)
       ELEMENTS = %w(prefix infix suffix)
 
       attr_accessor :params, :named_params

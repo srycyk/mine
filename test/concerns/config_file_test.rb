@@ -15,8 +15,8 @@ describe Mine::Concerns::ConfigFile do
     "tmp/ds-mine/test"
   end
 
-  def temp_file
-    path = "#{temp_file_dir}/template.json"
+  def temp_file(name='template')
+    path = "#{temp_file_dir}/#{name}.json"
 
     json = '{ "prefix": "New" }'
 

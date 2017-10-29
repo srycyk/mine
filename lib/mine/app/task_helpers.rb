@@ -17,21 +17,21 @@ module Mine
       # Templates
       TEMPLATE_CONFIG_DIR = 'config'
 
-      def template(name, paths=nil, file_name=nil)
-        paths ||= template_paths
+      def template(name, file_name=nil, paths=nil)
         file_name ||= template_file
+        paths ||= template_paths
 
-        Concerns::Template.new(name, dirs, file_name)
+        Concerns::Template.new(name, file_name, paths)
       end
 
-      def sequence_template(name, paths=nil, file_name=nil)
-        paths ||= template_paths
+      def sequence_template(name, file_name=nil, paths=nil)
         file_name ||= template_file
+        paths ||= template_paths
 
-        Concerns::SequenceTemplate.new(name, paths, file_name)
+        Concerns::SequenceTemplate.new(name, file_name, paths)
       end
 
-      def list_template(items, name=nil, paths=nil, file_name=nil)
+      def list_template(items, name=nil, file_name=nil, paths=nil)
         template_string = template(name, items, paths, file_name).()
 
         Mine::Concerns::SequenceList.new(template_string, items)
@@ -45,7 +45,6 @@ module Mine
       end
 
       def template_file
-puts "TaskHelper: #{self.inspect}"
         # default: 'template'
       end
 
