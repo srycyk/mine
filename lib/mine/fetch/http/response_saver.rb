@@ -8,7 +8,7 @@ module Mine
   module Fetch
     module Http
       class ResponseSaver < Struct.new(:response, :sub_dir, :deep_base)
-        EXTENSIONS = %w(png gif jpeg jpg pdf js)
+        EXTENSIONS = %w(png gif jpeg jpg pdf js json css)
 
         def call(name=nil, with_time: name.nil?, deep_base: nil)
           self.deep_base = deep_base if deep_base

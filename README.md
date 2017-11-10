@@ -3,7 +3,7 @@
 ## Introduction
 
 A framework for visiting, and collecting data from, a series of web-pages.
-The HTTP requests it makes are virtually indistinguishable from an regular
+The HTTP requests it makes are virtually indistinguishable from a regular
 web browsing session. Also, it dramatically reduces the amount of code you
 need to write to scrape a site.
 
@@ -13,7 +13,7 @@ business details, events, reviews, images, etc..
 I has, just about, every feature you may need when data mining.
 Among other things, it is rerunnable, supports rotating proxy access,
 is error tolerant (it retries unresponsive sites),
-follows redirects &amp; keeps cookies by default,
+follows redirects, keeps cookies by default,
 logs activity extensively, does not need constant monitoring,
 and has helpers to extract &amp; reformat data.
 
@@ -22,8 +22,8 @@ but that isn't really what it's for.
 
 ## Basic Functions
 
-Used as a framework, it supports two basic operations that automate
-the collection of a series of related web pages.
+It supports two basic operations that automate the collection of a
+series of related web pages.
 
 * Follows a list of links that are expicitly given ahead of execution.
 

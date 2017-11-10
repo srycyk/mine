@@ -46,7 +46,7 @@ module Mine
       end
 
       def save_page(response, out_list=nil)
-        list_data_item = (out_list || visit_list).data_item 'html'
+        list_data_item = (out_list || visit_list).data_item #'html'
 
         response.saver(list_data_item.sub_dir).(list_data_item.file_name)
       end
