@@ -5,7 +5,7 @@
 A framework for visiting, and collecting data from, a series of web-pages.
 The HTTP requests it makes are virtually indistinguishable from a regular
 web browsing session. Also, it dramatically reduces the amount of code you
-need to write to scrape a site.
+need to write to scrape a site, and provides an OO API.
 
 It's designed to compile lists of things like products, services,
 business details, events, reviews, images, etc..
@@ -15,39 +15,42 @@ Among other things, it is rerunnable, supports rotating proxy access,
 is error tolerant (it retries unresponsive sites),
 follows redirects, keeps cookies by default,
 logs activity extensively, does not need constant monitoring,
+has templates for building URL lists,
 and has helpers to extract &amp; reformat data.
 
 It can be be used as a library, (from the console, command-line, etc.),
-but that isn't really what it's for.
+but it's more useful for performing a succession of page retrievals.
 
 ## Basic Functions
 
-It supports two basic operations that automate the collection of a
-series of related web pages.
+It supports two basic operations that automate the collection of
+a number of related web pages.
 
 * Follows a list of links that are expicitly given ahead of execution.
 
-* Pages through a succesion of pages, (starting from a given base URL).
+* Traverses through a set of (numbered) pages, (starting from a base URL).
   It advances by searching for, and following, a link buried within the HTML.
-  perhaps identified by having text like *Next Page*.
+  perhaps identified by having associated text like *Next Page*.
 
 There are variations on how exactly each of these two are initiated,
 extended and filtered.
 But they are the two primary means of collection within this framework.
 
-As the facility cycles through the pages, it writes the retrieved data
-to the local file system, where they are indexed for
-scanning later on. At this time, individual data items can be extracted -
-and appended to a list, thus building up a a series of records.
-It stores the raw (payload data) received from a site in one file,
-alongside another file which shows details of the HTTP exchanges.
+As the facility cycles through the fetched pages, it writes the retrieved
+data to the local file system, and indexes it for scanning later on.
+At this time, data items can be extracted,
+and built up into a series of records,
+which are then perhaps written to a CSV file.
+
+The raw (payload data) received from a site in kept in one file,
+alongside another file which gives details of the HTTP exchanges.
 
 Although by no means mandatory, the usual workflow is to
 
 * Retrieve the external data and store it locally,
 * Extract sections of text from this locally stored data.
 
-This avoids constantly hitting the site
+This avoids constantly hitting the same site
 when gradually building up data sets using, say, CSS selectors.
 
 In most cases, you'll be extracting data from HTML,
@@ -56,7 +59,7 @@ And, if need be, you can also use Regular Expressions.
 
 If you're dealing with JSON, you'll have to parse it yourself.
 But if you're receiving all your data as JSON, this facility may
-be ill-suited.
+not be all that suitable.
 
 ## Features
 
@@ -67,10 +70,10 @@ Failures occur for two main reasons:
 
 * Because a particular site is unresponsive, e.g. it is simply down
 
-* Because you're excluded e.g. making too many requests too quickly
+* Because you're excluded e.g. have made too many requests too quickly
 
-To mitigate against the former, a retrieval is potentially re-runnable,
-that is, it can re-attempt a failed request.
+To mitigate against the former, a retrieval operation can be instructed
+to retry in the event of a failure.
 
 To mitigate against the latter, there is (almost transparent) support
 for rotating proxy access. As it runs, it obtains fresh IP addresses
@@ -83,8 +86,8 @@ and a new one is fetched from another proxy provider.
 > Proxy servers trick the host into thinking
 > that your requests come from elsewhere.
 
-In the event of a failure, it will recover from an exception,
-and will re-attempt the request, but not indefinitely.
+If a failure occurs, it will recover from an exception,
+and re-attempt the request, but not indefinitely.
 
 But the likelihood is that if it fails once, it'll do the same again.
 So if the fetching of a particular page is not necessary,
@@ -104,6 +107,10 @@ you fine-tune this behaviour.
 
 ## Installation
 
+Download the source:
+
+$ git fetch https://github.com/srycyk/mine
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -114,13 +121,13 @@ And then execute:
 
     $ bundle
 
-Or use it from within the gem itself.
+Or use it from within the gem itself, or package it as a gem: *$ rake build*.
 
 ## Creating a scraping application
 
 Scraping with this facility is easier done than said!
 
-One way is to create an application under the module:
+One way is to create an application (or gem) under the module:
 Mine::Apps::{MyApp} and write a class called *Runner*, that inherits
 from the supplied class: *Mine::App::RunnerBase*.
 
@@ -140,24 +147,25 @@ The main extraction classes are:
 * Mine::App::ExtractTask
 * Mine::App::SearchTask
 
-There is a data directory that will be set up.
-By default it's *tmp/mine-ds/apps/{myapp}/*,
+There is a data directory that will be set up,
+under the working directory's root.
+By default it's *./tmp/mine-ds/apps/{myapp}/*,
 though this location can be easily changed.
 
-This directory tree is used as a working areas for storing
-the retrieved, and extracted, data.
-You usually access these files through the API.
+This directory tree is used for storing the retrieved, and extracted, data.
+You usually access these files through the OO API, e.g. *Mine::Storage::List*.
 
 You can put config files under this directory tree,
-but they're more convenient if put under *config/{app_name}/*.
+but they're more convenient if put under *./config/{app_name}/*.
 
 It'd take a book chapter, or two, to explain all of the the *ins and outs*.
-So for now, I'm afraid you'll have to dig into the source code
-to find your way round.
+So for now, you'll just have to dig into the source code
+if you want to find your way around.
 
-The code has, so far, it has proved resilient, and it has made hundreds
+The code has, so far, it has proved resilient, and has made hundreds
 of consecutive requests on sites that take measures to ban bots.
-The core objects are tested well, but,
+
+The core objects are tested in the suites, but,
 the testing of the higher level objects is not fully comprehensive.
 
 > Setting up an environment for HTTP testing,
