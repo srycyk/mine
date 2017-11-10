@@ -1,8 +1,8 @@
 
 module Mine
   module Concerns
-    module FileExtension < Struct(:dir)
-      EXTENSIONS = %w(txt json csv html)
+    class FileExtension < Struct.new(:dir)
+      EXTENSIONS = %w(txt js json csv html htm jpeg jpg png gif)
 
       def call(name)
         files = []
@@ -19,6 +19,10 @@ module Mine
 
         files
       end
+    end
+
+    def first(name)
+      call(name) {|ext| return ext }
     end
   end
 end
