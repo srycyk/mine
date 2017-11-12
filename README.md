@@ -10,7 +10,7 @@ need to write to scrape a site, and provides an OO API.
 It's designed to compile lists of things like products, services,
 business details, events, reviews, images, etc..
 
-I has, just about, every feature you may need for data mining.
+It has, just about, every feature you may need for data mining.
 Among other things, it is rerunnable, supports rotating proxy access,
 is error tolerant (it retries unresponsive sites),
 follows redirects, keeps cookies by default,
@@ -19,7 +19,7 @@ has templates for building URL lists,
 and has helpers to extract &amp; reformat data.
 
 It can be be used as a library, (from the console, command-line, etc.),
-but it's more useful for performing a succession of page retrievals.
+but it's more useful for performing a succession of web page retrievals.
 
 ## Basic Functions
 
@@ -55,7 +55,7 @@ when gradually building up data sets using, say, CSS selectors.
 
 In most cases, you'll be extracting data from HTML,
 so Nokigiri support is built in.
-And, if need be, you can also use Regular Expressions.
+But, if need be, you can also use Regular Expressions.
 
 If you're dealing with JSON, you'll have to parse it yourself.
 But if you're receiving all your data as JSON, this facility may
@@ -153,7 +153,7 @@ By default it's *./tmp/mine-ds/apps/{myapp}/*,
 though this location can be easily changed.
 
 This directory tree is used for storing the retrieved, and extracted, data.
-You usually access these files through the OO API, e.g. *Mine::Storage::List*.
+You usually access these files through the API, e.g. *Mine::Storage::List*.
 
 You can put config files under this directory tree,
 but they're more convenient if put under *./config/{app_name}/*.
