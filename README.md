@@ -16,6 +16,7 @@ is error tolerant (it retries unresponsive sites),
 follows redirects, keeps cookies by default,
 logs activity extensively, does not need constant monitoring,
 has templates for building URL lists,
+has no external run-time dependencies aside from the Nokogiri gem,
 and has helpers to extract &amp; reformat data.
 
 It can be be used as a library, (from the console, command-line, etc.),
