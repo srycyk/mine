@@ -121,8 +121,8 @@ And then execute:
 
     $ bundle
 
-Alternatively, you can use it from within the gem's working directory,
-or, from this same directory, create your own copy of the gem file:
+Alternatively, you can use it from within the gem's working directory.
+Or, from this same directory, create a local copy of the gem file with:
 
     $ rake build
 
