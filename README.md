@@ -5,7 +5,7 @@
 A framework for visiting, and collecting data from, a series of web-pages.
 The HTTP requests it makes are virtually indistinguishable from a regular
 web browsing session. Also, it dramatically reduces the amount of code you
-need to write to scrape a site, and provides an OO API.
+need to write to scrape a site, and has an OO API throughout.
 
 It's designed to compile lists of things like products, services,
 business details, events, reviews, images, etc..
@@ -30,17 +30,17 @@ a number of related web pages.
 
 * Traverses through a set of (numbered) pages, (starting from a base URL).
   It advances by searching for, and following, a link buried within the HTML.
-  perhaps identified by having associated text like *Next Page*.
+  Perhaps identified by having associated text like *Next Page*.
 
 There are variations on how exactly each of these two are initiated,
 extended and filtered.
 But they are the two primary means of collection within this framework.
 
 As the facility cycles through the fetched pages, it writes the retrieved
-data to the local file system, and indexes it for scanning later on.
-At this time, data items can be extracted,
+data to the local file system, where it's indexed it for scanning later on.
+During the scanning phase, data items can be extracted
 and built up into a series of records,
-which are then perhaps written to a CSV file.
+which are then, maybe, written to a CSV file.
 
 The raw (payload data) received from a site in kept in one file,
 alongside another file which gives details of the HTTP exchanges.
@@ -51,7 +51,7 @@ Although by no means mandatory, the usual workflow is to
 * Extract sections of text from this locally stored data.
 
 This avoids constantly hitting the same site
-when gradually building up data sets using, say, CSS selectors.
+when gradually building up data sets using, say, CSS, or XPath, selectors.
 
 In most cases, you'll be extracting data from HTML,
 so Nokigiri support is built in.
@@ -59,7 +59,7 @@ But, if need be, you can also use Regular Expressions.
 
 If you're dealing with JSON, you'll have to parse it yourself.
 But if you're receiving all your data as JSON, this facility may
-not be all that suitable.
+not be suitable.
 
 ## Features
 
@@ -81,22 +81,22 @@ from a number of (free) proxy providers - currently there are three.
 
 You can specify the number of requests you want a proxy to be used for.
 Once this limit's exceeded, the current proxy address is discarded,
-and a new one is fetched from another proxy provider.
+and a new one is fetched from the next available proxy provider.
 
 > Proxy servers trick the host into thinking
 > that your requests come from elsewhere.
 
 If a failure occurs, it will recover from an exception,
-and re-attempt the request, but not indefinitely.
+and re-attempt the request, but this won't go on indefinitely.
 
-But the likelihood is that if it fails once, it'll do the same again.
+The likelihood is that if it fails once, it'll do the same again.
 So if the fetching of a particular page is not necessary,
 the framework can be configured to remove the offending URL from
 the working list and carry on with the rest.
 
 You can specify the number of times that failures must occur before
 it will grind to a complete halt. There are several parameters that let
-you fine-tune this behaviour.
+you specify this sort of behaviour.
 
 > Be aware that page scraping is a game of *cat and mouse*.
 > Most sites with useful data are able to detect suspicious activity,
@@ -121,7 +121,10 @@ And then execute:
 
     $ bundle
 
-Or use it from within the gem itself, or package it as a gem: *$ rake build*.
+Alternatively, you use it from within the gem's working directory,
+or, from this same directory, create your own copy of the gem file:
+
+   $ rake build
 
 ## Creating a scraping application
 
@@ -163,15 +166,15 @@ So for now, you'll just have to dig into the source code
 if you want to find your way around.
 
 The code has, so far, it has proved resilient, and has made hundreds
-of consecutive requests on sites that take measures to ban bots.
+of consecutive requests on several sites that take measures to ban bots.
 
 The core objects are tested in the suites, but,
 the testing of the higher level objects is not fully comprehensive.
 
-> Setting up an environment for HTTP testing,
+> Setting up an environment for thorough HTTP testing,
 > with a proxy server &amp; provider,
 > external website stubs, simulating 404's, timeouts, etc.,
-> is just too much work for now!
+> is far too much effort!
 
 ## Development
 
