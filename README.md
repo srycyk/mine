@@ -109,22 +109,22 @@ you specify this sort of behaviour.
 
 Download the source:
 
-$ git fetch https://github.com/srycyk/mine
+    $ git fetch https://github.com/srycyk/mine
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'mine' #, path: '../path/to/mine'
+gem 'mine', path: './path/to/mine'
 ```
 
 And then execute:
 
     $ bundle
 
-Alternatively, you use it from within the gem's working directory,
+Alternatively, you can use it from within the gem's working directory,
 or, from this same directory, create your own copy of the gem file:
 
-   $ rake build
+    $ rake build
 
 ## Creating a scraping application
 
