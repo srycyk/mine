@@ -3,7 +3,7 @@ module Mine
   module Fetch
     module Proxy
       class ProviderFactory #< Struct.new(:name)
-        NAMES = %i(gimmeproxy proxicity getproxylist)
+        NAMES = %i(gimmeproxy proxicity getproxylist pubproxy byteproxies)
 
         #attr_accessor :available_providers
 
@@ -19,8 +19,12 @@ module Mine
             Providers::Proxicity.new name
           when :getproxylist
             Providers::Getproxylist.new name
+          when :pubproxy
+            Providers::Pubproxy.new name
+          when :byteproxies
+            Providers::Byteproxies.new name
           else
-            call :gimmeproxy
+            call :byteproxies
           end
         end
 

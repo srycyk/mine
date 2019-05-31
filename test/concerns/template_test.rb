@@ -15,7 +15,23 @@ describe Mine::Concerns::Template do
   after { File.unlink "#{to}#{file}" }
 
   it 'works' do
+    assert_equal 'Zero One (x)', template.call % 'x'
+  end
+
+  it 'gets elements' do
     assert_equal 'Zero One', template.call(%w(prefix infix))
+  end
+
+  it 'gets element' do
+    assert_equal 'Zero ', template.element(:prefix)
+  end
+
+  it 'gets first element' do
+    assert_equal 'Zero ', template.element
+  end
+
+  it 'gets first element with base' do
+    assert_equal 'Zero ', template.base
   end
 end
 

@@ -57,12 +57,17 @@ module Mine
       end
 
       def write(path)
-        File.open path, 'w' do |stream|
+        File.open csv_path(path), 'w' do |stream|
           stream.write csv.join
         end
       end
 
       private
+
+      CSV_EXT = '.csv'
+      def csv_path(path)
+        path + (path.end_with?(CSV_EXT) ? '' : CSV_EXT)
+      end
 
       def get_current_key
         current_key or raise "No key present. Must first call #add"

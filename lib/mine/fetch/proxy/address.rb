@@ -9,7 +9,7 @@ module Mine
           super.compact
         end
 
-        def to_s(long=false)
+        def to_s(long=true)
           to_a * ' ' + (long && name ? " <#{name}>" : '')
         end
 

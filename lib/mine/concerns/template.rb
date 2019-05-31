@@ -24,12 +24,14 @@ module Mine
         end
       end
 
-      private
-
-      def element(element_name)
+      def element(element_name=params.keys.first)
         named_params[element_name.to_s] or named_params[element_name.to_sym] or
-          params[element_name]
+          params[element_name.to_s] or params[element_name.to_sym]
       end
+
+      alias base element
+
+      private
 
       def config_file
         ConfigFile.new file_name, sub_dirs

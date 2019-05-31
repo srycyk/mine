@@ -5,24 +5,23 @@ module Mine
   module Fetch
     module Proxy
       module Providers
-        # proxicity.io
-        class Proxicity < HttpProvider
+        # https://pubproxy.com/
+        class Pubproxy < HttpProvider
           private
 
           def fetch
-            get "https://api.proxicity.io/v2/proxy?protocol=http&httpsSupport=true" #&port=443" #&country=UK"
+            get "http://pubproxy.com/api/proxy"
           end
 
           def values
-            data&.fetch('ipPort', '').split ':'
+            data&.values_at('ip', 'port')
           end
 
           def data
-            parse_json(super)
+            parse_json(super)['data']&.first
           end
         end
       end
     end
   end
 end
-

@@ -43,7 +43,10 @@ module Mine
       end
 
       def to_s
-        "#{index + 1} of #{items.size} [#{current}] <#{name}>"
+        "#{position_info index + 1, items.size} [#{current}] <#{name}>"
+      end
+      def position_info(position, total)
+        "#{position} of #{total} (#{(position * 100.0 / total).to_i}%)"
       end
 
       def increment(incremental=1)

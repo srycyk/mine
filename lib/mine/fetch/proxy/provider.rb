@@ -38,3 +38,4 @@ module Mine
     end
   end
 end
+

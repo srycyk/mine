@@ -32,7 +32,7 @@ module Mine
       end
 
       def list_template(items, name=nil, file_name=nil, paths=nil)
-        template_string = template(name, items, paths, file_name).()
+        template_string = template(name, paths, file_name).()
 
         Mine::Concerns::SequenceList.new(template_string, items)
       end
@@ -62,7 +62,12 @@ module Mine
       #end
 
       def expand_links(links, base_url)
-        links.map {|link| Fetch::Http::BuildUri.absolute link, base_url }
+        links.map {|link| expand_link(link, base_url) }
+         .compact
+      end
+
+      def expand_link(link, base_url)
+        Fetch::Http::BuildUri.absolute(link, base_url) rescue nil
       end
 
       # Collections

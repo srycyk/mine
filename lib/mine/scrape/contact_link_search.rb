@@ -5,7 +5,7 @@ module Mine
       private
 
       def search_terms
-        [ 'contact', 'about', 'in touch' ]
+        [ 'contact', 'about', 'in touch', 'company', 'enquiry' ]
       end
     end
   end

@@ -42,8 +42,9 @@ module Mine
       def proxy_args(on=false, num_tries=nil)
         if on
           return proxy_providers, num_tries
+        else
+	  []
         end
-	[]
       end
 
       private

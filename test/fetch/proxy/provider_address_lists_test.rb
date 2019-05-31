@@ -3,8 +3,15 @@ require "test_helper"
 describe Mine::Fetch::Proxy::ProviderAddressLists do
   COUNT = 3
 
+  def byte
+    rand 256
+  end
+  def port
+    rand(9999) + 1
+  end
+
   def address_line
-    "#{rand 256}.#{rand 256}.#{rand 256}.#{rand 256} #{rand(9999) + 1}"
+    "#{byte}.#{byte}.#{byte}.#{byte} #{port}"
   end
 
   def address_lines(count=COUNT)

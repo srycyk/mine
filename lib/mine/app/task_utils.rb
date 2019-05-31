@@ -46,6 +46,7 @@ module Mine
       end
 
       # Options
+
       def covert(override={})
         providers = settings.proxy_providers
 
@@ -56,7 +57,7 @@ module Mine
         traversal_options **default_options.merge(override)
       end
 
-      def casual(override={})
+      def divert(override={})
         traversal_options **removal_options.merge(override)
       end
 

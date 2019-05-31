@@ -8,15 +8,14 @@ module Mine
       include TaskUtils
       include TaskHelpers
       
-      attr_accessor :settings, :xx
+      attr_accessor :settings
 
       def initialize(*)
         super
 
         self.app_name ||= get_app_name
-        self.settings = Settings.new(app_name)
 
-        #self.xx = xx
+        self.settings = Settings.new(app_name)
       end
 
       def call(name)
