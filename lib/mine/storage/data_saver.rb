@@ -31,6 +31,7 @@ module Mine
       def load(mode=nil)
         mode ||= :json if options[:ext] == 'json'
         mode ||= :csv if options[:ext] == 'csv'
+        mode ||= :rb if options[:ext] == 'rb'
 
         case mode || options[:mode] || :string
         when :string, :as_string
@@ -45,6 +46,10 @@ module Mine
           self.options[:ext] ||= 'csv'
 
           load_csv
+        when :rb, :as_rb, :ruby, :as_ruby
+          self.options[:ext] ||= 'rb'
+
+          eval load_string
         end
       end
 
@@ -87,7 +92,7 @@ module Mine
       end
 
       def mkdirs
-        FileUtils.mkdir_p dir
+        FileUtils.mkdir_p(dir) if not Dir.exists?(dir)
       end
 
       def as_string(data)

@@ -15,17 +15,17 @@ module Mine
 
           name = "_#{take_time.hour}#{name && '-'}#{name}" if with_time
 
-          dump_html name
+          dump_data name
 
-          dump_meta name
+          dump_meta_data name
         end
 
-        def dump_html(name)
+        def dump_data(name)
           store(name, ext).dump response.body
         end
 
-        def dump_meta(name)
-          store(name).dump response.info.to_s
+        def dump_meta_data(name)
+          store(name, 'txt').dump response.info.to_s
         end
 
         private

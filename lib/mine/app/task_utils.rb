@@ -28,7 +28,7 @@ module Mine
       end
 
       def follow_xref_task(searcher, name, name_suffix, options=nil)
-        task FollowerXrefTask options do |follow_xref|
+        task FollowXrefTask, options do |follow_xref|
           follow_xref.(searcher, name, name_suffix)
         end
       end

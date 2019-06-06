@@ -13,6 +13,8 @@ describe Mine::Storage::DataSaver do
 
   let(:json) { { 'and' => 'the', 'argo' => "00000000" } }
 
+  let(:ruby_string) { '%w(tuesday)' }
+
   let(:csv_array) { [ %w(a b c), %w(x y x) ] }
   let(:csv_text) { "a,b,c\nx,y,x\n" }
 
@@ -78,6 +80,21 @@ describe Mine::Storage::DataSaver do
 
     assert_match /\.csv$/, saver.path
   end
+
+  it 'saves rb extension' do
+    saver_opts ext: 'rb'
+
+    assert_match /\.rb$/, saver.path
+  end
+
+  it 'saves and restores ruby' do
+    saver_opts(ext: 'rb').dump ruby_string
+
+    assert_equal %w(tuesday), saver.load(:as_ruby)
+    assert_equal %w(tuesday), saver.load
+  end
+=begin
+=end
 
   it 'goes under a branch dir' do
     original = Mine::Storage::DataLocator.root

@@ -2,21 +2,26 @@ require "test_helper"
 
 describe Mine::Storage::ListDataItem do
   let(:file_name) { 'list_data_item' }
+
   let(:ext) { 'text' }
 
-  let(:items) { %w(one two three) }
+  let(:sub_dir) { "test/lists/" }
 
-  let(:list) { Mine::Storage::CycleListSave.new [], file_name, 'test/lists' }
+  let(:file_path) { File.join(file_name, '00') }
+
+  let(:list) { Mine::Storage::CycleListSave.new [], file_name, sub_dir }
+
+  let(:items) { %w(one two three) }
 
   let :data_items do
     %w(First Second Third)
   end
 
   def delete_files
-    dir = "tmp/ds-mine/test/lists/"
+    dir = File.join("tmp/ds-mine/", sub_dir)
 
     files = [ "#{file_name}.txt", "#{file_name}-index.txt",
-              "#{file_name}/0000.#{ext}", "#{file_name}/0001.#{ext}" ]
+              "#{file_name}/00/000.#{ext}", "#{file_name}/00/001.#{ext}" ]
 
     files.each do |file|
       path = "#{dir}#{file}"
@@ -32,11 +37,11 @@ describe Mine::Storage::ListDataItem do
   end
 
   it 'points to subdir' do
-    assert_equal file_name, list.data_item.sub_dir.last
+    assert_equal file_path, list.data_item.sub_dir
   end
 
   it 'generates file name' do
-    assert_equal '0000', list.data_item.file_name
+    assert_equal '000', list.data_item.file_name
   end
 
   it 'pushes first' do

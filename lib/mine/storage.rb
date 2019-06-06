@@ -13,6 +13,8 @@ require 'mine/storage/list_data_item'
 require 'mine/storage/list_iterator'
 require 'mine/storage/list_data_item_iterator'
 
+require 'mine/storage/index_to_path'
+
 module Mine
   module Storage
     def self.under(*args, &block)

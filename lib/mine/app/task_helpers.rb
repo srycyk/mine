@@ -81,11 +81,12 @@ module Mine
         load_up ? acca.() : acca
       end
 
-      # Strings
-      def stage_name(name, type)
-        "#{name}-#{type}"
+      # Xref
+      def xref(name, sub_dir=nil)
+        Xref.new(xref_name(name), sub_dir)
       end
 
+      # Strings
       def trim(string)
         (string || '').sub(/\\t/, ' ').strip.squeeze(' ')
       end
@@ -94,8 +95,21 @@ module Mine
         text.gsub(%r{</?[^>]+?>}, '')
       end
 
+      # Names
+      def stage_name(name, type)
+        "#{name}-#{type}"
+      end
+
       def app_token(name)
         "#{settings.app_name}-#{name}"
+      end
+
+      def aux(name=nil)
+        "#{name ? name + '-' : ''}aux"
+      end
+
+      def xref_name(name)
+        "#{aux name}-xref"
       end
     end
   end

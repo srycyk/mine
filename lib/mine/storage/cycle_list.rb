@@ -43,10 +43,17 @@ module Mine
       end
 
       def to_s
-        "#{position_info index + 1, items.size} [#{current}] <#{name}>"
+        "#{show_position index, items.size} [#{current}] <#{name}>"
       end
-      def position_info(position, total)
-        "#{position} of #{total} (#{(position * 100.0 / total).to_i}%)"
+      def show_position(position, total)
+        "#{position + 1} of #{total}" +
+          " (#{path position} #{percent position + 1, total}%)"
+      end
+      def path(index)
+        IndexToPath.new.(index)
+      end
+      def percent(top, bottom)
+        (top * 100.0 / bottom).to_i
       end
 
       def increment(incremental=1)

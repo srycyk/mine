@@ -2,23 +2,26 @@
 module Mine
   module App
     class SearchAllXrefTask < IterateAllBase
+      include TaskHelpers
+
       def call(searcher, name, xref_name, *args)
-        xref = Xref.new(xref_name, name).()
+        #xref_map = Xref.new(xref_name, name).()
+        xref_map = xref(name).()
 
-        aux_list_name = "#{name}-#{xref_name}"
+        xref_list_name = "#{name}-#{xref_name}"
 
-        aux_list = Storage::CycleList.load aux_list_name
+        xref_list = Storage::CycleList.load xref_list_name
 
         super name, *args do |data, item, index|
           found = searcher.(data, item, index)
 
-          if items = xref.get(item)
-            items.each do |aux_item|
-              aux_list.find aux_item
+          if xref_items = xref_map.get(item)
+            xref_items.each do |xref_item|
+              xref_list.find xref_item
 
-              aux_data = aux_list.data_item('html').()
+              xref_data = xref_list.data_item('html').()
 
-              found += searcher.(aux_data, item, index)
+              found += searcher.(xref_data, item, index)
             end
           end
 

@@ -20,19 +20,19 @@ describe Mine::Storage::CycleListSave do
   it 'starts' do
     list.start 1
 
-    assert_equal list.current, 'two'
+    assert_equal'two', list.current
   end
 
   it 'pauses' do
     advance(2).pause.reset
 
-    assert list.position, 2
+    assert 2, list.position
   end
 
   it 'plays' do
     advance.pause.reset
 
-    assert list.play.position, 2
+    assert 2, list.play.position
   end
 
   it 'finishes at last item' do

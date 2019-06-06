@@ -3,6 +3,8 @@ require "test_helper"
 describe Mine::Storage::ListDataItemIterator do
   let(:file_name) { 'list_data_item_iterator' }
 
+  let(:sub_dir) { "test/lists/" }
+
   let(:items) { %w(one two three) }
 
   let :data_items do
@@ -10,13 +12,21 @@ describe Mine::Storage::ListDataItemIterator do
   end
 
   def list(items=[])
-    Mine::Storage::CycleListSave.new items, file_name, 'test/lists'
+    Mine::Storage::CycleListSave.new items, file_name, sub_dir
   end
 
   def saved_list
     prepared_list = list 
     (0...data_items.size).each do |index|
       prepared_list.add_data_item items[index], data_items[index]
+    end
+    prepared_list.reset
+  end
+
+  def saved_list
+    prepared_list = list 
+    items.each.with_index do |item, index|
+      prepared_list.add_data_item item, data_items[index]
     end
     prepared_list.reset
   end
@@ -28,14 +38,16 @@ describe Mine::Storage::ListDataItemIterator do
   def delete_files
     dir = "tmp/ds-mine/test/lists/"
 
-    files = [ file_name, "#{file_name}-index",
-              "#{file_name}/0000", "#{file_name}/0001", "#{file_name}/0002" ]
+    files = [ file_name, "#{file_name}-index", "#{file_name}/00/000",
+              "#{file_name}/00/001", "#{file_name}/00/002" ]
 
     files.each do |file|
       path = "#{dir}#{file}.txt"
 
       File.unlink path if File.file? path
     end
+    #abs_dir = "#{dir}#{file_name}/00/"
+    #Dir.unlink abs_dir if Dir exists? abs_dir
   end
 
   def without_files

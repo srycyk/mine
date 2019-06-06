@@ -21,16 +21,14 @@ describe Mine::Storage::List do
     delete_list_file
   end
 
-  it 'delegates [] []= to items' do
-    new_items = %w(one two)
-
-    list[1..-2] = new_items
-
-    assert_equal list[1..-2], new_items
-  end
-
   it 'delegates to [] to items' do
     assert_equal list[1..-2], items[1..-2]
+  end
+
+  it 'delegates [] []= to items' do
+    list[1..-2] = %w(one two)
+
+    assert_equal %w(hi one two go), list.items
   end
 
   it 'returns items length' do
@@ -44,7 +42,7 @@ describe Mine::Storage::List do
 
     list << tools
 
-    assert_equal list, orig_items + [tools]
+    assert_equal orig_items + [tools], list.items
   end
 
   it 'checks equality on items against named list' do
@@ -71,7 +69,7 @@ describe Mine::Storage::List do
     without_file do
       list.dump
 
-      assert_equal list_class.load(file_name, 'test'), items
+      assert_equal items, list_class.load(file_name, 'test').items
     end
   end
 
