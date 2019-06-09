@@ -27,6 +27,14 @@ module Mine
 
         private
 
+        def values
+          json_values
+        end
+
+        def fetch
+          get API_URL
+        end
+
         def get(url)
           Http::Get.new(url).()
         end
@@ -40,7 +48,7 @@ module Mine
         end
 
         def address_okay?
-          values.any?
+          values&.any?
         end
 
         def provider_okay?

@@ -1,8 +1,12 @@
 require "test_helper"
 
 require_relative 'proxy_response_stub'
+require_relative 'proxy_helpers'
+require_relative 'shared_proxy_assertions'
 
 describe Mine::Fetch::Proxy::Providers::Byteproxies do
+  include ProxyHelpers
+
   let :raw_response do
 %<[
     {
@@ -21,13 +25,10 @@ describe Mine::Fetch::Proxy::Providers::Byteproxies do
 ]>
   end
 
-  let (:provider) { Mine::Fetch::Proxy::Providers::Byteproxies.new }
+  let (:provider) { Mine::Fetch::Proxy::Providers::Byteproxies.new :byteproxies }
 
-  let (:address) { Mine::Fetch::Proxy::Address.new("190.60.103.178", 8080) }
+  let (:address) { proxy_address("190.60.103.178", 8080) }
 
-  it 'returns address' do
-    provider.stub :fetch, ProxyResponseStub.new.(raw_response) do |provider|
-      assert_equal address, provider.()
-    end
-  end
+  include SharedProxyAssertions
 end
+

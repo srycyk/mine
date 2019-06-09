@@ -27,12 +27,24 @@ module Mine
           response
         end
 
+        def json_data
+          parse_json(data)
+        end
+
         def address_okay?
           values&.any?
         end
 
         def parse_json(string)
-          JSON.parse string
+          JSON.parse string rescue nil
+        end
+
+        def json_values(*names)
+          names = %w(ip port) if names.none?
+
+          values = json_data&.values_at(*names).compact
+
+          values if values.any?
         end
       end
     end

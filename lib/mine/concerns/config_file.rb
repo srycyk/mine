@@ -42,6 +42,15 @@ module Mine
       def file
         "#{name}.#{ext}"
       end
+=begin
+      def stringify_all_keys(hash)
+        stringified_hash = {}
+        hash.each do |k, v|
+          stringified_hash[k.to_s] = v.is_a?(Hash) ? stringify_all_keys(v) : v
+        end
+        stringified_hash
+      end
+=end
     end
   end
 end

@@ -5,20 +5,13 @@ module Mine
   module Fetch
     module Proxy
       module Providers
-        # https://pubproxy.com/
         class Pubproxy < HttpProvider
+          API_URL = "http://pubproxy.com/api/proxy"
+
           private
 
-          def fetch
-            get "http://pubproxy.com/api/proxy"
-          end
-
           def values
-            data&.values_at('ip', 'port')
-          end
-
-          def data
-            parse_json(super)['data']&.first
+            json_data&.fetch('data', nil)&.first&.values_at('ip', 'port')
           end
         end
       end

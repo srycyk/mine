@@ -1,8 +1,12 @@
 require "test_helper"
 
 require_relative 'proxy_response_stub'
+require_relative 'proxy_helpers'
+require_relative 'shared_proxy_assertions'
 
 describe Mine::Fetch::Proxy::Providers::Gimmeproxy do
+  include ProxyHelpers
+
   let :raw_response do
 %<{
   "get": true,
@@ -30,8 +34,9 @@ describe Mine::Fetch::Proxy::Providers::Gimmeproxy do
 }>
   end
 
-  let (:provider) { Mine::Fetch::Proxy::Providers::Gimmeproxy.new }
+  let (:provider) { Mine::Fetch::Proxy::Providers::Gimmeproxy.new :gimmeproxy }
 
+=begin
   let (:address) { Mine::Fetch::Proxy::Address.new("138.68.163.239", "8118") }
 
   it 'returns address' do
@@ -39,4 +44,8 @@ describe Mine::Fetch::Proxy::Providers::Gimmeproxy do
       assert_equal address, provider.()
     end
   end
+=end
+  let (:address) { proxy_address("138.68.163.239", "8118") }
+
+  include SharedProxyAssertions
 end

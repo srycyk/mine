@@ -7,18 +7,12 @@ module Mine
       module Providers
         # proxicity.io
         class Proxicity < HttpProvider
+          API_URL = "https://api.proxicity.io/v2/proxy?protocol=http&httpsSupport=true" #&port=443" #&country=UK"
+
           private
 
-          def fetch
-            get "https://api.proxicity.io/v2/proxy?protocol=http&httpsSupport=true" #&port=443" #&country=UK"
-          end
-
           def values
-            data&.fetch('ipPort', '').split ':'
-          end
-
-          def data
-            parse_json(super)
+            json_data&.fetch('ipPort', '').split ':'
           end
         end
       end

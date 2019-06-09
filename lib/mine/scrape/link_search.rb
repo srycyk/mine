@@ -2,8 +2,6 @@
 module Mine
   module Scrape
     class LinkSearch < Search
-      attr_accessor :search_terms
-
       def call(*)
         super
 
@@ -21,22 +19,42 @@ module Mine
 
           next if href.empty? or mail?(href) or href.start_with? '..'
 
-          text = a.text
+          link_text = a.text
 
-          if has_search_term?(href) or has_search_term?(text)
+          if has_search_terms?(href, link_text) and include_term?(href)
             links << (item ? to_absolute(href) : href)
           end
         end
         links
       end
 
-      def has_search_term?(text)
-        search_terms.each {|name| return true if text =~ /#{name}/i }
-
+      def has_search_terms?(*text_list)
+        text_list.each {|text| return true if has_search_term?(text) }
         false
       end
 
+      def has_search_term?(text)
+        has_term?(text, search_terms)
+      end
+
+      def include_term?(text)
+        not has_term?(text, exclude_terms)
+      end
+
       private
+
+      # Override
+      def search_terms
+        []
+      end
+      def exclude_terms
+        []
+      end
+
+      def has_term?(text, terms)
+        terms.each {|term| return true if text =~ /#{term}/i }
+        false
+      end
 
       def to_absolute(link)
         Fetch::Http::BuildUri.absolute link, item rescue link
