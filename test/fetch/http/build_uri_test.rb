@@ -13,7 +13,7 @@ describe Mine::Fetch::Http::BuildUri do
   let(:uri) { URI.parse url }
 
   let(:params) { { 'e' => 'mc2', 'c' => '2pir' } }
-  let(:param)  { { 'i' => '2.54cm' } }
+  let(:param)  { { 'inch' => '2.54cm' } }
 
   let(:build_uri_class) { Mine::Fetch::Http::BuildUri }
 
@@ -68,6 +68,11 @@ describe Mine::Fetch::Http::BuildUri do
   it 'makes absolute' do
     assert_equal 'http://www.maths.co.uk/path/to/page.html',
                   build_uri_class.absolute('/path/to/page.html', build_uri.to_s)
+  end
+
+  it "makes absolute from absolute" do
+    assert_equal build_uri.to_s,
+       build_uri_class.absolute(build_uri.to_s, build_uri.to_s)
   end
 end
 

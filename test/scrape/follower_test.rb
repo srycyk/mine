@@ -25,23 +25,23 @@ describe Mine::Scrape::Follower do
 
   after { clean }
 
-=begin
-=end
   it 'spins through' do
     stub_follower response_for_site do |follower|
       follower.(site_list)
 
       assert follower.visit_list.finished?
       assert follower.visit_list.any?
+      refute follower.visit_list.current
     end
   end
 
-  it 'stops at first' do
+  it 'stops at last' do
     stub_follower response_for_site do |follower|
-      follower.(site_list) { true }
+      follower.(site_list)
 
-      refute follower.visit_list.finished?
-      assert_equal sites.first, follower.visit_list.current
+      assert_equal sites.last, follower.visit_list.last
+      assert_equal sites.size, follower.visit_list.index
+      assert follower.send(:finished?)
     end
   end
 
@@ -75,7 +75,7 @@ describe Mine::Scrape::Follower do
     end
   end
 
-  it 'logs sites' do
+  it 'logs site visits' do
     output = []
 
     stub_follower response_for_site, output do |follower|
@@ -112,7 +112,16 @@ describe Mine::Scrape::Follower do
     end
   end
 
-  it '' do
+  it 'resumes' do
+    stub_follower response_for_site do |follower|
+      follower.(site_list)
+      follower.visit_list.go_back
+      follower.visit_list.pause
+
+      refute follower.visit_list.finished?
+      follower.(site_list)
+      assert follower.visit_list.finished?
+    end
   end
 end
 

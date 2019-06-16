@@ -1,5 +1,5 @@
 
-require 'mine/app/task_utils'
+require 'mine/app/task_facade'
 require 'mine/app/task_helpers'
 
 module Mine
@@ -11,7 +11,7 @@ module Mine
     #   keep_cookie: false
     #   agent_options: {} # TODO
     class TaskBase < Struct.new(:settings, :options)
-      include TaskUtils
+      include TaskFacade
       include TaskHelpers
 
       def initial_values(name=nil)

@@ -6,9 +6,11 @@ module Mine
     module Proxy
       module Providers
         class Byteproxies < HttpProvider
-          API_URL = "https://byteproxies.com/api.php?key=free&amount=1&type=http&anonymity=elite"
-
           private
+
+          def api_url
+            "https://byteproxies.com/api.php?key=free&amount=1&type=http&anonymity=elite"
+          end
 
           def values
             if hash = json_data&.first

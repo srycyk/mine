@@ -1,11 +1,11 @@
 
-require 'mine/app/task_utils'
+require 'mine/app/task_facade'
 require 'mine/app/task_helpers'
 
 module Mine
   module App
     class RunnerBase < Struct.new(:app_name, :config)
-      include TaskUtils
+      include TaskFacade
       include TaskHelpers
       
       attr_accessor :settings

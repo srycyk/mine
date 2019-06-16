@@ -32,7 +32,7 @@ module Mine
         end
 
         def fetch
-          get API_URL
+          get api_url
         end
 
         def get(url)

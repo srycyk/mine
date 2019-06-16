@@ -28,14 +28,6 @@ module Mine
         index_to_path.file(index)
       end
 
-=begin
-      def file_name(index=nil)
-        index = list.index unless index
-
-        ('0' * 9 + index.to_s)[-ZERO_PADDING..-1]
-      end
-=end
-
       def put(data, index=nil)
         saver = storage index
 

@@ -34,13 +34,11 @@ module Mine
           response_code == :redirect
         end
 
-        def read_csrf_token
-          if http_response.body.size > 100
-            meta_tag = Extract::Parser.new(http_response.body).()
-              .css("meta[name='csrf-token']")
-
-            meta_tag.attribute('content').to_s if meta_tag&.any?
-          end
+        def csrf_token
+          SecurityTokens.new(body).csrf_token
+        end
+        def authenticity_token
+          SecurityTokens.new(body).authenticity_token
         end
 
         def uri

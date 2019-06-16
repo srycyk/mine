@@ -6,9 +6,11 @@ module Mine
     module Proxy
       module Providers
         class Getproxylist < HttpProvider
-          API_URL = "https://api.getproxylist.com/proxy?protocol=http" #&country=UK"
-
           private
+
+          def api_url
+            "https://api.getproxylist.com/proxy?protocol=http" #&country=UK"
+          end
 
           def values
             json_values&.map(&:to_s)

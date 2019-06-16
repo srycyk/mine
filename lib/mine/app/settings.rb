@@ -33,10 +33,19 @@ module Mine
       #end
 
       def proxy_providers
-        #addresses = [ '110.216.61.8 80', "89.36.212.124 1189" ]
-        #address_list = Fetch::Proxy::ProviderAddressLists.new('list', addresses)
-        #self.providers = [ address_list ]
-        providers = Fetch::Proxy::ProviderFactory.call.shuffle
+        default_proxy_providers
+      end
+
+      def default_proxy_providers
+        Fetch::Proxy::ProviderFactory.call.shuffle
+      end
+
+      def listed_proxy_providers
+        addresse_list = [ '110.216.61.8 80', "89.36.212.124 1189" ]
+
+        addresses = Fetch::Proxy::ProviderAddressLists.new('list', addresses)
+
+        [ addresses ]
       end
 
       def proxy_args(on=false, num_tries=nil)

@@ -1,30 +1,32 @@
 
 require 'mine/concerns/reformatter'
-require 'mine/concerns/sequence_list'
+#require 'mine/concerns/sequence_list'
 
 module Mine
   module App
-    module TaskUtils
+    module TaskFacade
       def task(klass, options=nil, *args)
         options = overt unless options
 
-        klass.new(settings, options, *args).tap {|task| yield task if block_given? }
+        klass.new(settings, options, *args).tap do |task|
+          yield task if block_given?
+        end
       end
 
       def follower_task(options=nil, &block)
         task FollowerTask, options, &block
       end
 
-      def pager_task(options=nil, &block)
-        task PagerTask, options, &block
+      def pager_task(options=nil, *args, &block)
+        task PagerTask, options, *args, &block
       end
 
-      def reducer_task(options=nil, &block)
-        task ReducerTask, options, &block
+      def reducer_task(options=nil, *args, &block)
+        task ReducerTask, options, *args, &block
       end
 
-      def template_follower_task(options=nil, file_name=nil, paths=nil, &block)
-        task TemplateFollowerTask, options, file_name, paths, &block
+      def template_follower_task(options=nil, template=nil, &block)
+        task TemplateFollowerTask, options, template, &block
       end
 
       def follow_xref_task(searcher, name, name_suffix, options=nil)

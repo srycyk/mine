@@ -19,7 +19,7 @@ module Mine
           #show_atts response.attributes, out: out, indent: '- '
           show_atts attributes, out: out, indent: '- '
 
-          if csrf_token = response.read_csrf_token
+          if csrf_token = response.csrf_token
             out << EOL << "CSRF-Token = '#{csrf_token}'" << EOL
           end
 

@@ -9,11 +9,7 @@ module Mine
 
         return if finished?
 
-        list_iterator.() do |url|
-          response = process_request(url)
-
-          break if block_given? and yield(response, visit_list)
-        end
+        list_iterator.() {|url| process_request(url) }
       end
     end
   end

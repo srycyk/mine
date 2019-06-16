@@ -8,7 +8,7 @@ module Mine
   module Fetch
     module Http
       class ResponseSaver < Struct.new(:response, :sub_dir, :deep_base)
-        EXTENSIONS = %w(png gif jpeg jpg pdf js json css)
+        EXTENSIONS = %w(png gif jpeg jpg pdf js json css text txt)
 
         def call(name=nil, with_time: name.nil?, deep_base: nil)
           self.deep_base = deep_base if deep_base
@@ -25,14 +25,14 @@ module Mine
         end
 
         def dump_meta_data(name)
-          store(name, 'txt').dump response.info.to_s
+          store(name, 'info').dump response.info.to_s
         end
 
         private
 
-        def store(name, ext=nil)
+        def store(name, extension=nil)
           Storage::DataSaver.new name, sub_dir: sub_dir,
-                                       ext: ext,
+                                       ext: extension,
                                        deep_base: deep_base
         end
 

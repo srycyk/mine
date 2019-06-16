@@ -1,5 +1,5 @@
 
-require 'mine/app/task_utils'
+require 'mine/app/task_facade'
 require 'mine/app/task_helpers'
 
 module Mine

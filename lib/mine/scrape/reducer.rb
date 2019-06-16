@@ -6,6 +6,7 @@ module Mine
     class Reducer < Traversal
       attr_accessor :predicate
 
+      # predicate: -> (html, list)
       def call(list, predicate)
         self.visit_list = list
 
@@ -15,8 +16,6 @@ module Mine
 
         list_iterator.() do |url|
           response = process_request(url)
-
-          break if block_given? and yield(response, visit_list)
         end
       end
 

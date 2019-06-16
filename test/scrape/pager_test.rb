@@ -12,7 +12,8 @@ describe Mine::Scrape::Pager do
   def mappings
     { one: link(:next, 'page/two'),
       two: link(:next, 'page/three'),
-      three: 'Third' }
+      three: link(:next, 'page/four'),
+      four: 'Fourth' }
   end
 
   def pager(options=nil)
@@ -27,12 +28,20 @@ describe Mine::Scrape::Pager do
     stub_task_error pager, &block
   end
 
-  def pager_block
+  def xpager_block
     -> page, out {
       if ( link = page.css("a[id='next']") ).any?
         out << link.attr('href')
       end
     }
+  end
+
+  def next_page_selector
+    "a[id='next']"
+  end
+
+  def pager_block
+    -> page { page.at_css(next_page_selector)&.attr('href') }
   end
 
   def pager_list
@@ -43,8 +52,6 @@ describe Mine::Scrape::Pager do
 
   after { clean }
 
-=begin
-=end
   it 'spins through' do
     stub_pager response_for_site do |pager|
       pager.(pager_list, &pager_block)
@@ -102,7 +109,7 @@ describe Mine::Scrape::Pager do
     stub_pager response_for_site, output do |pager|
       set_proxy pager, 2
 
-      addresses = [ proxy_addresses.first, *proxy_addresses ]
+      addresses = proxy_addresses.values_at 0, 0, 1, 1
 
       pager.(pager_list, &pager_block)
 
@@ -121,7 +128,34 @@ describe Mine::Scrape::Pager do
     end
   end
 
-  it '' do
+  it 'resumes' do
+    stub_pager response_for_site do |pager|
+      pager.(pager_list, &pager_block)
+
+      (1..1).each do
+        pager.visit_list.go_back
+        pager.visit_list.remove!
+      end
+
+      assert pager.send :finished?
+
+      last_html = sites_to_content.(pager.visit_list.last)
+
+      pager.stub :last_item_html, last_html do |pager|
+        refute pager.send :finished?
+      end
+
+      last_html = sites_to_content.(pager.visit_list.last)
+
+      pager.stub :last_item_html, last_html do |pager|
+        pager.(site_list, &pager_block)
+
+        assert pager.send :finished?
+      end
+    end
   end
+=begin
+#binding.pry
+=end
 end
 

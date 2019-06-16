@@ -9,6 +9,7 @@ require 'mine/fetch/http/response_saver'
 
 require 'mine/fetch/http/escape_uri'
 require 'mine/fetch/http/build_uri'
+require 'mine/fetch/http/security_tokens'
 
 module Mine
   module Http

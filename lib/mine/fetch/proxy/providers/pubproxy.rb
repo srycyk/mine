@@ -6,9 +6,11 @@ module Mine
     module Proxy
       module Providers
         class Pubproxy < HttpProvider
-          API_URL = "http://pubproxy.com/api/proxy"
-
           private
+
+          def api_url
+            "http://pubproxy.com/api/proxy"
+          end
 
           def values
             json_data&.fetch('data', nil)&.first&.values_at('ip', 'port')

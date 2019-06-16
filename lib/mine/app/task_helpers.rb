@@ -32,7 +32,7 @@ module Mine
       end
 
       def list_template(items, name=nil, file_name=nil, paths=nil)
-        template_string = template(name, paths, file_name).()
+        template_string = template(name, file_name, paths).()
 
         Mine::Concerns::SequenceList.new(template_string, items)
       end
@@ -56,6 +56,11 @@ module Mine
         template(nil).(elements)
       end
 
+      # Nokogiri
+
+      def parser(html)
+      end
+
       # Url's
       #def add_domain(url, domain)
       #  url.sub %r{//}, "//#{domain}."
@@ -73,6 +78,10 @@ module Mine
       # Collections
       def reformatter(container)
         Concerns::Reformatter.new(container)
+      end
+
+      def normalise(list)
+        list.compact!.sort!.uniq
       end
 
       def accumulator(name: 'acca', load_up: true)

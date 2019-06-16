@@ -17,12 +17,9 @@ module Mine
 
         list_iterator.(&block)
 
-        clean
-      end
-
-      def clean
-        self.collector = collector.compact.sort.uniq
+        collector
       end
     end
   end
 end
+

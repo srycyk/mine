@@ -25,8 +25,7 @@ module Mine
       end
 
       def element(element_name=params.keys.first)
-        named_params[element_name.to_s] or named_params[element_name.to_sym] or
-          params[element_name.to_s] or params[element_name.to_sym]
+        value(named_params, element_name) or value(params, element_name)
       end
 
       alias base element
@@ -39,6 +38,10 @@ module Mine
 
       def elements
         ELEMENTS
+      end
+
+      def value(parameters, name)
+        parameters[name.to_s] or parameters[name.to_sym]
       end
 
       def self.show(app_name, name)

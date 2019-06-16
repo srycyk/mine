@@ -27,7 +27,7 @@ describe Mine::Scrape::Reducer do
   end
 
   def predicate
-    -> (html, *) { Mine::Scrape::EmailSearch.new(html).().any? }
+    -> (html, *) { html&.index mail }
   end
 
   before { reset }
@@ -46,16 +46,17 @@ describe Mine::Scrape::Reducer do
     end
   end
 
-=begin
   it 'catches error (timeout)' do
     stub_reducer nil do |reducer|
-      assert_raises(Mine::TooManyAttemptsError) { reducer.(site_list) }
+      assert_raises(Mine::TooManyAttemptsError) do
+        reducer.(site_list, predicate)
+      end
     end
   end
 
   it 'catches fetching error (http)' do
     stub_reducer_error do |reducer|
-      assert_raises(Mine::TooManyAttemptsError) { reducer.(site_list) }
+      assert_raises(Mine::TooManyAttemptsError) { reducer.(site_list, predicate) }
     end
   end
 
@@ -63,7 +64,7 @@ describe Mine::Scrape::Reducer do
     stub_reducer response_for_site do |reducer|
       set_proxy reducer, 2
 
-      reducer.(site_list)
+      reducer.(site_list, predicate)
 
       assert reducer.visit_list.finished?
     end
@@ -73,7 +74,7 @@ describe Mine::Scrape::Reducer do
     stub_reducer response_for_site do |reducer|
       set_proxy reducer, 1
 
-      assert_raises(Mine::NoMoreProxiesError) { reducer.(site_list) }
+      assert_raises(Mine::NoMoreProxiesError) { reducer.(site_list, predicate) }
     end
   end
 
@@ -81,11 +82,10 @@ describe Mine::Scrape::Reducer do
     output = []
 
     stub_reducer response_for_site, output do |reducer|
-      reducer.(site_list)
+      reducer.(site_list, predicate)
 
-      (0...sites.size).each do |index|
-        assert_match /\[#{sites[index]}\]/, output[index]
-      end
+      assert_match /1 of 3.+\[#{sites[1]}\]/, output[1]
+      assert_match /2 of 2.+\[#{sites[3]}\]/, output[3]
     end
   end
 
@@ -95,27 +95,35 @@ describe Mine::Scrape::Reducer do
     stub_reducer response_for_site, output do |reducer|
       set_proxy reducer, 2
 
-      addresses = [ proxy_addresses.first, *proxy_addresses ]
+      addresses = proxy_addresses.values_at 0, 0, 1, 1
 
-      reducer.(site_list)
+      reducer.(site_list, predicate)
 
       (0...sites.size).each do |index|
-        assert_match /\(#{addresses[index]}\s/, output[index]
+        assert_match /\(#{addresses[index].addr}\s/, output[index]
       end
     end
   end
 
   it 'removes items on error' do
     stub_task reducer(task_options(true)), nil do |reducer|
-      reducer.(site_list)
+      reducer.(site_list, predicate)
 
       assert reducer.visit_list.none?
       assert reducer.visit_list.finished?
     end
   end
 
-  it '' do
+  it 'resumes' do
+    stub_reducer response_for_site do |reducer|
+      reducer.(site_list, predicate)
+      reducer.visit_list.go_back
+      reducer.visit_list.pause
+
+      refute reducer.visit_list.finished?
+      reducer.(site_list, predicate)
+      assert reducer.visit_list.finished?
+    end
   end
-=end
 end
 

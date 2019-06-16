@@ -11,7 +11,7 @@ module Mine
         if count.to_i > 0
           ((start || 1)..limit).map do |count|
             template_string % (count * (multiple || 1))
-           end
+          end
         else
           [ template_string % '' ]
         end
