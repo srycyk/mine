@@ -154,8 +154,5 @@ describe Mine::Scrape::Pager do
       end
     end
   end
-=begin
-#binding.pry
-=end
 end
 

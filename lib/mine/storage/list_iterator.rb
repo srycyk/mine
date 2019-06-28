@@ -1,7 +1,7 @@
 
 module Mine
   module Storage
-    class ListIterator < Struct.new(:list_or_name, :ignore_position)
+    class ListIterator < Struct.new(:list_or_name, :ignore_position, :ext)
       def call
         items = []
 

@@ -43,8 +43,8 @@ module Mine
         ExtractAllTask.new(settings).(name, &extractor)
       end
 
-      def search_task(name, &searcher)
-        SearchAllTask.new(settings).(name, &searcher)
+      def search_task(name, searcher)
+        SearchAllTask.new(settings).(name, searcher)
       end
 
       # Options

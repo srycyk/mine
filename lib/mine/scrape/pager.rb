@@ -7,13 +7,15 @@ module Mine
     class Pager < Traversal
       include Extract::ExtractorHelpers
 
-      attr_accessor :visit_list, :finder
+      attr_accessor :visit_list, :finder, :ext
 
       # finder, block: -> (html_node) OR css selector string
-      def call(list, finder=nil, &block)
+      def call(list, finder=nil, ext: 'html', &block)
         self.visit_list = list
 
         self.finder = finder || block
+
+        self.ext = ext
 
         return if finished?
 
@@ -55,7 +57,7 @@ module Mine
       end
 
       def last_item_html
-        visit_list.data_item('html').(visit_list.size - 1)
+        visit_list.data_item(ext).(visit_list.size - 1)
       end
     end
   end

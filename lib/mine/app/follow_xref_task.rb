@@ -15,10 +15,8 @@ module Mine
       private
 
       def follow_links(links, name, name_suffix, follower_options)
-        auxiliary_file = "#{name}-#{name_suffix}"
-
         follower_task(follower_options || options) do |follower|
-          follower.(auxiliary_file, links)
+          follower.(auxiliary_name(name, name_suffix), links)
         end
       end
 
@@ -27,24 +25,27 @@ module Mine
       end
 
       def index_links(links_by_site, name, name_suffix)
-        #xref = Xref.new(name_suffix, name)
-        xref = xref(name)
+        link_xref = xref auxiliary_name(name, name_suffix)
 
-        link_list = []
+        links = []
 
-        links_by_site.each do |links, site|
-          xref.add site, links
+        links_by_site.each do |site_links, site|
+          link_xref.add site, site_links
 
-          link_list += links
+          links += site_links
         end
 
-        xref.dump
+        link_xref.dump
 
-        link_list
+        links
       end
 
       def search_links(searcher, name)
         SearchAllTask.new.(searcher, name)
+      end
+
+      def auxiliary_name(name, name_suffix)
+        "#{name}-#{name_suffix}"
       end
     end
   end

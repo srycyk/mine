@@ -13,24 +13,15 @@ module Mine
       def contact_page_xref(site_list_name, name_suffix=nil, options=nil)
         name_suffix ||= XREF_SUFFIX
 
-        contact_search = Scrape::ContactLinkSearch.new
-
-=begin
         task App::FollowXrefTask do |follow_xref|
-          follow_xref.(contact_search, site_list_name, name_suffix, options)
-        end
-=end
-        task App::FollowXrefTask, options do |follow_xref|
-          follow_xref.(contact_search, site_list_name, name_suffix)
+          follow_xref.(contact_searcher, site_list_name, name_suffix, options)
         end
       end
 
       def email_xref_search(site_list_name, name_suffix=nil)
         name_suffix ||= XREF_SUFFIX
 
-        email_search = Scrape::EmailSearch.new
-
-        App::SearchAllXrefTask.new.(email_search, site_list_name, name_suffix)
+        App::SearchAllXrefTask.new.(email_searcher, site_list_name, name_suffix)
       end
 
       def emails_by_site(site_list_name)
@@ -39,6 +30,18 @@ module Mine
 
                               reformatter(mails).array_mapper(0, 1)
                             end
+      end
+
+      def email_search(site_list_name, name_suffix=nil)
+        search_task(email_searcher, site_list_name)
+      end
+
+      def contact_searcher
+        Scrape::ContactLinkSearch.new
+      end
+
+      def email_searcher
+        Scrape::EmailSearch.new
       end
     end
   end

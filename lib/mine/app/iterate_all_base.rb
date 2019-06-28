@@ -10,10 +10,10 @@ module Mine
         self.collector = []
       end
 
-      def call(name, out=nil, &block)
-        self.collector = out if out
+      def call(name, output: nil, ext: nil, &block)
+        self.collector = output if output
 
-        list_iterator = Storage::ListDataItemIterator.new(name, true)
+        list_iterator = Storage::ListDataItemIterator.new(name, true, ext)
 
         list_iterator.(&block)
 

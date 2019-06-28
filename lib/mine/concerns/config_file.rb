@@ -4,53 +4,68 @@ require 'json'
 module Mine
   module Concerns
     class ConfigFile
-      attr_accessor :name, :dirs, :ext, :accumulate
+      EXTENSIONS = %w(json rb)
 
-      def initialize(name, dirs, ext: 'json', accumulate: false)
+      attr_accessor :name, :dirs, :exts, :accumulate
+      alias accumulate? accumulate
+
+      def initialize(name, dirs, extensions: nil, accumulate: false)
         self.name = name
         self.dirs = dirs
-        self.ext = ext
+        self.exts = extensions || EXTENSIONS
         self.accumulate = accumulate
       end
 
       def call
         if accumulate?
-          search.reverse.reduce({}) {|acca, dir| acca.merge read dir } 
+          search.reverse.reduce({}) {|acca, path| acca.merge read path } 
         else
           read search.first
         end
       end
 
+      alias to_h call
+
+      private
+
       def search
-        dirs.select {|dir| File.file? path(dir) }
-      end
+        dirs.reduce [] do |acca, dir|
+          exts.each {|ext| add_if_present(dir, ext, to: acca) }
 
-      def accumulate?
-        accumulate
-      end
-
-      def read(dir)
-        return {} unless dir
-
-        JSON.parse IO.read path dir
-      end
-
-      def path(dir)
-        File.join dir, file
-      end
-
-      def file
-        "#{name}.#{ext}"
-      end
-=begin
-      def stringify_all_keys(hash)
-        stringified_hash = {}
-        hash.each do |k, v|
-          stringified_hash[k.to_s] = v.is_a?(Hash) ? stringify_all_keys(v) : v
+          acca
         end
-        stringified_hash
       end
-=end
+
+      def add_if_present(dir, ext, to:)
+        path = File.join(dir, "#{name}.#{ext}")
+
+        to << path if File.file? path
+      end
+
+      def read(path)
+        return {} unless path
+
+        contents = IO.read path
+
+        case path
+        when /\.json/
+          JSON.parse contents
+        when /\.rb/
+          stringify_keys eval(contents)
+        else
+          contents
+        end or Hash.new
+      end
+
+      def stringify_keys(hash)
+        stringified = {}
+
+        hash.each do |key, value|
+          stringified[key.to_s] = Hash === value ? stringify_keys(value) : value
+        end if hash
+
+        stringified
+      end
     end
   end
 end

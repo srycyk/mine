@@ -2,10 +2,8 @@
 module Mine
   module Storage
     class ListDataItemIterator < ListIterator
-      attr_accessor :ext
-
-      def call(ext='html')
-        self.ext = ext
+      def call(extension=nil)
+        self.ext = extension || ext || 'html'
 
         super()
       end
@@ -18,3 +16,4 @@ module Mine
     end
   end
 end
+
